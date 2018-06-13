@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Game Jquery link-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+    <title>Sliding Puzzle</title>
+</head>
+<body>
+     
+<style>
+.picture {
+border: 1px solid black;
+}
+</style>
+</head>
+<body>
+    <div id="title">
+    <h2>Sliding Puzzle</h2>
+    </div>
+    <div id="slider">
+    <form>
+    <label>Easy</label>
+        <input type="range" id="scale" value="4" min="3" max="5" step="1">
+        <label>Hard</label>
+    </form>
+        <br>
+        </div>
+        <div id="main" class="main">
+            <canvas id="puzzle" width="480px" height="480px"></canvas>
+        </div>
+
+
+<script>
+// API link //
+ var randompic = "";     
+ //function newpic(){
+  $.getJSON('https://api.unsplash.com/photos/random/?client_id=9af5544220fe100412f9c47afe3485659a86f6c96a013b33bece4f75b2eb2b17&query=art&w=480&h=480', function(data) {
+    window.randompic = (data.urls.custom);
+    console.log(data.urls.custom)
+
+
+
+var context = document.getElementById('puzzle').getContext('2d');
+
+var img = new Image();
+console.log('----->', window.randompic);
+img.src = window.randompic;
+img.addEventListener('load', drawTiles, false);
+
+var boardSize = document.getElementById('puzzle').width;
+var tileCount = document.getElementById('scale').value;
+
+var tileSize = boardSize / tileCount;
+
+var clickLoc = new Object;
+clickLoc.x = 0;
+clickLoc.y = 0;
+
+var emptyLoc = new Object;
+emptyLoc.x = 0;
+emptyLoc.y = 0;
+
+var solved = false;
+
+var boardParts;
+setBoard();
+
+document.getElementById('scale').onchange = function() {
+  tileCount = this.value;
+  tileSize = boardSize / tileCount;
+  setBoard();
+  drawTiles();
+};
+
+document.getElementById('puzzle').onclick = function(e) {
+  clickLoc.x = Math.floor((e.pageX - this.offsetLeft) / tileSize);
+  clickLoc.y = Math.floor((e.pageY - this.offsetTop) / tileSize);
+  if (distance(clickLoc.x, clickLoc.y, emptyLoc.x, emptyLoc.y) == 1) {
+    slideTile(emptyLoc, clickLoc);
+    drawTiles();
+  }
+  if (solved) {
+    setTimeout(function() {alert("You solved it!");}, 500);
+  }
+};
+
+function setBoard() {
+  boardParts = new Array(tileCount);
+  for (var i = 0; i < tileCount; ++i) {
+    boardParts[i] = new Array(tileCount);
+    for (var j = 0; j < tileCount; ++j) {
+      boardParts[i][j] = new Object;
+      boardParts[i][j].x = (tileCount - 1) - i;
+      boardParts[i][j].y = (tileCount - 1) - j;
+    }
+  }
+  emptyLoc.x = boardParts[tileCount - 1][tileCount - 1].x;
+  emptyLoc.y = boardParts[tileCount - 1][tileCount - 1].y;
+  solved = false;
+}
+
+function drawTiles() {
+  context.clearRect ( 0 , 0 , boardSize , boardSize );
+  for (var i = 0; i < tileCount; ++i) {
+    for (var j = 0; j < tileCount; ++j) {
+      var x = boardParts[i][j].x;
+      var y = boardParts[i][j].y;
+      if(i != emptyLoc.x || j != emptyLoc.y || solved == true) {
+        context.drawImage(img, x * tileSize, y * tileSize, tileSize, tileSize,
+            i * tileSize, j * tileSize, tileSize, tileSize);
+      }
+    }
+  }
+}
+
+function distance(x1, y1, x2, y2) {
+  return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+}
+
+function slideTile(toLoc, fromLoc) {
+  if (!solved) {
+    boardParts[toLoc.x][toLoc.y].x = boardParts[fromLoc.x][fromLoc.y].x;
+    boardParts[toLoc.x][toLoc.y].y = boardParts[fromLoc.x][fromLoc.y].y;
+    boardParts[fromLoc.x][fromLoc.y].x = tileCount - 1;
+    boardParts[fromLoc.x][fromLoc.y].y = tileCount - 1;
+    toLoc.x = fromLoc.x;
+    toLoc.y = fromLoc.y;
+    checkSolved();
+  }
+}
+
+function checkSolved() {
+  var flag = true;
+  for (var i = 0; i < tileCount; ++i) {
+    for (var j = 0; j < tileCount; ++j) {
+      if (boardParts[i][j].x != i || boardParts[i][j].y != j) {
+        flag = false;
+      }
+    }
+  }
+  solved = flag;
+}
+
+// score //
+$(document).ready(function(){$(".score_filters a").click(function(){$(".hs_loadingtext").html("<strong>Loading...</strong>&nbsp;&nbsp;&nbsp;");var a=$(this).attr("href"),b=this;$("#ts_table").load(a,function(){$(".hs_loadingtext").html("");$(".score_filters a").removeClass();$(b).addClass("sel")});return false})});
+
+
+
+
+  });
+ //}       
+
+ // var queryURL = "https://api.unsplash.com/photos/random/?client_id=9af5544220fe100412f9c47afe3485659a86f6c96a013b33bece4f75b2eb2b17"
+// $.ajax({
+ // url : queryURL,
+ // method: "GET"
+// })
+//.then(function(response) {
+//    var randompic = (response.data.urls.full);
+//});
+
+
+
+    </script>
+</body>
+</html>
+

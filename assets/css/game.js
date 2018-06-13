@@ -1,3 +1,11 @@
+
+// adding API //
+$.getJSON('https://api.unsplash.com/photos/random/?client_id=9af5544220fe100412f9c47afe3485659a86f6c96a013b33bece4f75b2eb2b17', function(data) {
+  console.log(data)
+  
+  });
+  var =
+  
 // Game function code //
 
 $(function()
@@ -87,3 +95,5 @@ $(function()
     startApp();
 });
 
+
+ 

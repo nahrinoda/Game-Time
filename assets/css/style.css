@@ -131,3 +131,18 @@ body
 	
 }
 
+
+/* image API */
+.puzzle {
+    background-image:url(https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg);
+    width:100px;
+    height:100px;
+ }
+ 
+ .piece1 {
+    background-position:0 0
+ }
+ 
+ .piece2 {
+    background-position:-100px -100px
+ }
