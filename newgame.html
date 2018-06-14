@@ -11,6 +11,9 @@
  <!-- Game Jquery link-->
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 
+ <!-- Firebase -->
+ <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
  <title>Sliding Puzzle</title>
 
 </head>
@@ -21,13 +24,16 @@
     <div class="row">
         <div class="col">
             <h2>Sliding Puzzle</h2>
-          
+            <button onclick="myFunction()">New Image</button>
+            <br>
             <div id="slider">
               <form>
               <label>Easy</label>
                   <input type="range" id="scale" value="4" min="3" max="5" step="1">
                   <label>Hard</label>
               </form>
+              <h4>Users Currently Playing: <snap id ="userCon"></snap></h4>
+              <h4>Name: <snap id ="uname"></snap> Age: <snap id ="age"></snap></h4>
               <br>
             </div>
             <canvas id="puzzle" width="480" height="480"></canvas>    
@@ -43,6 +49,45 @@
   </div>
 </div>
 <script>
+
+function myFunction() {
+    location.reload();
+}
+
+//firebase
+var config = {
+    apiKey: "AIzaSyB6HBX0F7wwAyUWxYH7qO9Hl8fhKoYZNnM",
+    authDomain: "puzzle-8b876.firebaseapp.com",
+    databaseURL: "https://puzzle-8b876.firebaseio.com",
+    projectId: "puzzle-8b876",
+    storageBucket: "puzzle-8b876.appspot.com",
+    messagingSenderId: "527137740513"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+  var connectedRef = database.ref(".info/connected");
+  var connectionsRef = database.ref("/connections");
+
+connectedRef.on("value", function(snap) {
+
+// If they are connected..
+if (snap.val()) {
+
+  // Add user to the connections list.
+  var con = connectionsRef.push(true);
+  // Remove user from the connection list when they disconnect.
+  con.onDisconnect().remove();
+}
+});
+
+
+  connectionsRef.on("value", function(snap) {
+
+// Display the viewer count in the html.
+// The number of online users is the number of children in the connections list.
+$("#userCon").text(snap.numChildren());
+//console.log(snap.numChildren());
+});
 
 // API link //
  var randompic = ""; 
