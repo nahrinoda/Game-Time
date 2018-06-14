@@ -1,51 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Game Jquery link-->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+ <!-- Custom stylesheet -->
+ <!-- <link rel="stylesheet" href="assets/css/reset.css"> -->
+ <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+  
+ <!-- Game Jquery link-->
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 
-    <title>Sliding Puzzle</title>
+ <title>Sliding Puzzle</title>
+
 </head>
-<body>
-     
-<style>
-.picture {
-border: 1px solid black;
-}
-</style>
-</head>
-<body>
-    <div id="title">
-    <h2>Sliding Puzzle</h2>
-    </div>
-    <div id="slider">
-    <form>
-    <label>Easy</label>
-        <input type="range" id="scale" value="4" min="3" max="5" step="1">
-        <label>Hard</label>
-    </form>
-        <br>
-        </div>
-        <div id="main" class="main">
-            <canvas id="puzzle" width="480px" height="480px"></canvas>
-        </div>
 
+<body>  
 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Sliding Puzzle</h2>
+          
+            <div id="slider">
+              <form>
+              <label>Easy</label>
+                  <input type="range" id="scale" value="4" min="3" max="5" step="1">
+                  <label>Hard</label>
+              </form>
+              <br>
+            </div>
+            <canvas id="puzzle" width="480" height="480"></canvas>    
+        </div>
+        <div id="score_filters"></div>
+      
+        <div class="col">
+        <h2>Refrence Image</h2>
+        <div id="refImage">
+         
+        </div>
+      </div>
+  </div>
+</div>
 <script>
+
 // API link //
- var randompic = "";     
+ var randompic = ""; 
+    
  //function newpic(){
+ 
   $.getJSON('https://api.unsplash.com/photos/random/?client_id=9af5544220fe100412f9c47afe3485659a86f6c96a013b33bece4f75b2eb2b17&query=art&w=480&h=480', function(data) {
     window.randompic = (data.urls.custom);
     console.log(data.urls.custom)
 
+  var refImage = $('<img>').attr('src',window.randompic)
+ 
+  $('#refImage').append(refImage);
 
 
 var context = document.getElementById('puzzle').getContext('2d');
+
 
 var img = new Image();
 console.log('----->', window.randompic);
@@ -150,23 +164,14 @@ function checkSolved() {
 $(document).ready(function(){$(".score_filters a").click(function(){$(".hs_loadingtext").html("<strong>Loading...</strong>&nbsp;&nbsp;&nbsp;");var a=$(this).attr("href"),b=this;$("#ts_table").load(a,function(){$(".hs_loadingtext").html("");$(".score_filters a").removeClass();$(b).addClass("sel")});return false})});
 
 
-
-
   });
- //}       
 
- // var queryURL = "https://api.unsplash.com/photos/random/?client_id=9af5544220fe100412f9c47afe3485659a86f6c96a013b33bece4f75b2eb2b17"
-// $.ajax({
- // url : queryURL,
- // method: "GET"
-// })
-//.then(function(response) {
-//    var randompic = (response.data.urls.full);
-//});
+</script>
 
-
-
-    </script>
 </body>
+
 </html>
 
+
+
+  
