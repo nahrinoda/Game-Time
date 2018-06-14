@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+ <!-- Custom stylesheet -->
+ <!-- <link rel="stylesheet" href="assets/css/reset.css"> -->
+ <link rel="stylesheet" href="assets/css/game.css"> 
+  
+ <!-- Game Jquery link-->
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+ <!-- Firebase -->
+ <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+ <script src="path/to/howler.js"></script>
+
+ <title>Sliding Puzzle</title>
+
+</head>
+
+<body>  
+    <button id='howler-play'>Play</button>
+    <button id='howler-pause'>Pause</button>
+    <button id='howler-stop'>Stop</button>
+    <button id='howler-volup'>Vol+</button>
+    <button id='howler-voldown'>Vol-</button>
+  
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Sliding Puzzle</h2>
+            <button onclick="myFunction()">New Image</button>
+            <br>
+            <div id="slider">
+              <form>
+              <label>Easy</label>
+                  <input type="range" id="scale" value="4" min="3" max="5" step="1">
+                  <label>Hard</label>
+              </form>
+              <h4>Users Currently Playing: <snap id ="userCon"></snap></h4>
+              <h4>Name: <snap id ="uname"></snap> Age: <snap id ="age"></snap></h4>
+              <br>
+            </div>
+            <canvas id="puzzle" width="480" height="480"></canvas>    
+        </div>
+        <div id="score_filters"></div>
+      
+        <div class="col">
+        <h2>Reference Image</h2>
+        <div id="refImage">
+         
+        </div>
+      </div>
+  </div>
+</div>
+<script>
+// music //
+var sound = new Howl({
+  src: ['path/to/audio.mp3'],
+  volume: 0.8
+});
+
+sound.play();
+
+$(function(){
+
+var howler_example = new Howl({
+  src: ['/audio/sample/SampleAudio_0.4mb.mp3'],
+  volume: 0.5
+});
+
+$("#howler-play").on("click", function(){
+  howler_example.play();
+});
+
+$("#howler-pause").on("click", function(){
+  howler_example.pause();
+});
+
+$("#howler-stop").on("click", function(){
+  howler_example.stop();
+});
+
+$("#howler-volup").on("click", function(){
+  var vol = howler_example.volume();
+  vol += 0.1;
+  if (vol > 1) {
+    vol = 1;
+  }
+  howler_example.volume(vol);
+});
+
+$("#howler-voldown").on("click", function(){
+  var vol = howler_example.volume();
+  vol -= 0.1;
+  if (vol < 0) {
+    vol = 0;
+  }
+  howler_example.volume(vol);
+});
+
+});
+</script>
+</body>
+</html>
